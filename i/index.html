@@ -38,17 +38,61 @@
   const IOS_URL = '';
   const ANDROID_URL = '';
 
-  const en = {
-    title: 'You have been challenged!',
-    body: '3 quick games – the same puzzles for both of you.',
-    open: 'Open in the app',
-    ios: 'Download – App Store',
-    android: 'Download – Google Play',
-    hint: 'After installing, tap the link you received again and the challenge opens.',
+  // A HTML-ben a magyar szöveg van; a többi nyelv innen jön. Ismeretlen nyelvnél angol.
+  const t = {
+    en: { doc: 'Mind Duel – invite', title: 'You have been challenged!',
+          body: '3 quick games – the same puzzles for both of you.', open: 'Open in the app',
+          ios: 'Download – App Store', android: 'Download – Google Play',
+          hint: 'After installing, tap the link you received again and the challenge opens.' },
+    de: { doc: 'Mind Duel – Einladung', title: 'Du wurdest herausgefordert!',
+          body: '3 schnelle Spiele – für euch beide dieselben Rätsel.', open: 'In der App öffnen',
+          ios: 'Herunterladen – App Store', android: 'Herunterladen – Google Play',
+          hint: 'Tippe nach der Installation erneut auf den erhaltenen Link, dann öffnet sich die Herausforderung.' },
+    es: { doc: 'Mind Duel – invitación', title: '¡Te han desafiado!',
+          body: '3 juegos rápidos: los mismos retos para los dos.', open: 'Abrir en la app',
+          ios: 'Descargar – App Store', android: 'Descargar – Google Play',
+          hint: 'Después de instalarla, vuelve a tocar el enlace que recibiste y se abrirá el desafío.' },
+    fr: { doc: 'Mind Duel – invitation', title: 'Un défi pour toi !',
+          body: '3 jeux rapides – les mêmes énigmes pour vous deux.', open: 'Ouvrir dans l’app',
+          ios: 'Télécharger – App Store', android: 'Télécharger – Google Play',
+          hint: 'Après l’installation, touche à nouveau le lien reçu et le défi s’ouvrira.' },
+    pt: { doc: 'Mind Duel – convite', title: 'Um desafio para você!',
+          body: '3 jogos rápidos – os mesmos desafios para vocês dois.', open: 'Abrir no app',
+          ios: 'Baixar – App Store', android: 'Baixar – Google Play',
+          hint: 'Depois de instalar, toque de novo no link recebido e o desafio vai abrir.' },
+    it: { doc: 'Mind Duel – invito', title: 'Hai ricevuto una sfida!',
+          body: '3 giochi veloci – gli stessi rompicapi per entrambi.', open: 'Apri nell’app',
+          ios: 'Scarica – App Store', android: 'Scarica – Google Play',
+          hint: 'Dopo l’installazione, tocca di nuovo il link ricevuto e la sfida si aprirà.' },
+    pl: { doc: 'Mind Duel – zaproszenie', title: 'Masz wyzwanie!',
+          body: '3 szybkie gry – te same łamigłówki dla was obojga.', open: 'Otwórz w aplikacji',
+          ios: 'Pobierz – App Store', android: 'Pobierz – Google Play',
+          hint: 'Po instalacji dotknij ponownie otrzymanego linku, a wyzwanie się otworzy.' },
+    ro: { doc: 'Mind Duel – invitație', title: 'Ai primit o provocare!',
+          body: '3 jocuri rapide – aceleași puzzle-uri pentru amândoi.', open: 'Deschide în aplicație',
+          ios: 'Descarcă – App Store', android: 'Descarcă – Google Play',
+          hint: 'După instalare, atinge din nou linkul primit și provocarea se va deschide.' },
+    cs: { doc: 'Mind Duel – pozvánka', title: 'Máš výzvu!',
+          body: '3 rychlé hry – stejné hádanky pro oba.', open: 'Otevřít v aplikaci',
+          ios: 'Stáhnout – App Store', android: 'Stáhnout – Google Play',
+          hint: 'Po instalaci znovu klepni na obdržený odkaz a výzva se otevře.' },
+    nl: { doc: 'Mind Duel – uitnodiging', title: 'Je bent uitgedaagd!',
+          body: '3 snelle spellen – dezelfde puzzels voor jullie allebei.', open: 'Openen in de app',
+          ios: 'Downloaden – App Store', android: 'Downloaden – Google Play',
+          hint: 'Tik na het installeren opnieuw op de ontvangen link, dan opent de uitdaging.' },
+    tr: { doc: 'Mind Duel – davet', title: 'Sana meydan okundu!',
+          body: '3 hızlı oyun – ikiniz için de aynı bulmacalar.', open: 'Uygulamada aç',
+          ios: 'İndir – App Store', android: 'İndir – Google Play',
+          hint: 'Yükledikten sonra aldığın bağlantıya tekrar dokun, meydan okuma açılacak.' },
   };
-  if (!navigator.language.startsWith('hu')) {
-    document.documentElement.lang = 'en';
-    document.querySelectorAll('[data-t]').forEach(el => { el.textContent = en[el.dataset.t]; });
+  // A böngésző nyelvi sorrendjéből az első, amit ismerünk.
+  const lang = (navigator.languages || [navigator.language]).map(l => l.slice(0, 2).toLowerCase())
+    .find(l => l === 'hu' || t[l]) || 'en';
+  if (lang !== 'hu') {
+    const s = t[lang];
+    document.documentElement.lang = lang;
+    document.title = s.doc;
+    document.querySelectorAll('[data-t]').forEach(el => { el.textContent = s[el.dataset.t]; });
   }
   const code = (new URLSearchParams(location.search).get('c') || '').toUpperCase();
   const valid = /^[A-Z0-9]{6}$/.test(code);
