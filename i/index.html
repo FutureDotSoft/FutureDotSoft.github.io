@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mind Duel – meghívó</title>
 <meta name="description" content="Kihívtak a Mind Duelben: 3 gyors játék, ugyanazok a pályák mindkettőtöknek.">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
 <style>
-  :root { --bg:#f4f2ee; --card:#fff; --fg:#1c1b1f; --muted:#5f5d66; --accent:#5b5bd6; }
-  @media (prefers-color-scheme: dark) { :root { --bg:#121214; --card:#1c1c1f; --fg:#ecebf0; --muted:#a9a7b0; --accent:#a5a6ff; } }
+  :root { --bg:#f4f2ee; --card:#fff; --fg:#1c1b1f; --muted:#5f5d66; --accent:#1d4ed8; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#121214; --card:#1c1c1f; --fg:#ecebf0; --muted:#a9a7b0; --accent:#3b82f6; } }
   * { box-sizing: border-box; }
-  body { margin:0; min-height:100vh; display:grid; place-items:center; background:var(--bg); color:var(--fg);
+  body { margin:0; min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+         background:var(--bg); color:var(--fg);
          font:16px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding:16px; }
   main { width:100%; max-width:420px; background:var(--card); border-radius:20px; padding:28px 24px; text-align:center; }
   h1 { font-size:26px; margin:8px 0 4px; }
@@ -19,12 +22,16 @@
   a.primary { background:var(--accent); color:#fff; }
   a.secondary { border:1.5px solid var(--muted); color:var(--fg); }
   .hint { font-size:13px; margin-top:20px; }
+  .logo { width:72px; height:72px; border-radius:16px; }
+  footer { font-size:12px; margin-top:16px; color:var(--muted); opacity:.7; }
+  footer a { color:inherit; text-decoration:none; }
+  footer a:hover { text-decoration:underline; }
   [hidden] { display:none !important; }
 </style>
 </head>
 <body>
 <main>
-  <div style="font-size:48px">⚔️</div>
+  <img class="logo" src="icon.png" alt="Mind Duel">
   <h1 data-t="title">Kihívtak!</h1>
   <p data-t="body">3 gyors játék, mindkettőtöknek ugyanazok a pályák.</p>
   <div class="code" id="code"></div>
@@ -33,6 +40,9 @@
   <a class="btn secondary" id="android" hidden data-t="android">Letöltés – Google Play</a>
   <p class="hint" data-t="hint">Letöltés után koppints újra a kapott linkre, és a kihívás megnyílik.</p>
 </main>
+<footer>
+  <a href="../privacy/" data-t="privacy">Adatvédelem</a> · <a href="../terms/" data-t="terms">Felhasználási feltételek</a>
+</footer>
 <script>
   // Letöltési linkek: kiadás előtt TestFlight; amíg üres, a gomb rejtve marad.
   const IOS_URL = '';
@@ -43,47 +53,58 @@
     en: { doc: 'Mind Duel – invite', title: 'You have been challenged!',
           body: '3 quick games – the same puzzles for both of you.', open: 'Open in the app',
           ios: 'Download – App Store', android: 'Download – Google Play',
-          hint: 'After installing, tap the link you received again and the challenge opens.' },
+          hint: 'After installing, tap the link you received again and the challenge opens.',
+          privacy: 'Privacy', terms: 'Terms' },
     de: { doc: 'Mind Duel – Einladung', title: 'Du wurdest herausgefordert!',
           body: '3 schnelle Spiele – für euch beide dieselben Rätsel.', open: 'In der App öffnen',
           ios: 'Herunterladen – App Store', android: 'Herunterladen – Google Play',
-          hint: 'Tippe nach der Installation erneut auf den erhaltenen Link, dann öffnet sich die Herausforderung.' },
+          hint: 'Tippe nach der Installation erneut auf den erhaltenen Link, dann öffnet sich die Herausforderung.',
+          privacy: 'Datenschutz', terms: 'Nutzungsbedingungen' },
     es: { doc: 'Mind Duel – invitación', title: '¡Te han desafiado!',
           body: '3 juegos rápidos: los mismos retos para los dos.', open: 'Abrir en la app',
           ios: 'Descargar – App Store', android: 'Descargar – Google Play',
-          hint: 'Después de instalarla, vuelve a tocar el enlace que recibiste y se abrirá el desafío.' },
+          hint: 'Después de instalarla, vuelve a tocar el enlace que recibiste y se abrirá el desafío.',
+          privacy: 'Privacidad', terms: 'Términos' },
     fr: { doc: 'Mind Duel – invitation', title: 'Un défi pour toi !',
           body: '3 jeux rapides – les mêmes énigmes pour vous deux.', open: 'Ouvrir dans l’app',
           ios: 'Télécharger – App Store', android: 'Télécharger – Google Play',
-          hint: 'Après l’installation, touche à nouveau le lien reçu et le défi s’ouvrira.' },
+          hint: 'Après l’installation, touche à nouveau le lien reçu et le défi s’ouvrira.',
+          privacy: 'Confidentialité', terms: 'Conditions' },
     pt: { doc: 'Mind Duel – convite', title: 'Um desafio para você!',
           body: '3 jogos rápidos – os mesmos desafios para vocês dois.', open: 'Abrir no app',
           ios: 'Baixar – App Store', android: 'Baixar – Google Play',
-          hint: 'Depois de instalar, toque de novo no link recebido e o desafio vai abrir.' },
+          hint: 'Depois de instalar, toque de novo no link recebido e o desafio vai abrir.',
+          privacy: 'Privacidade', terms: 'Termos' },
     it: { doc: 'Mind Duel – invito', title: 'Hai ricevuto una sfida!',
           body: '3 giochi veloci – gli stessi rompicapi per entrambi.', open: 'Apri nell’app',
           ios: 'Scarica – App Store', android: 'Scarica – Google Play',
-          hint: 'Dopo l’installazione, tocca di nuovo il link ricevuto e la sfida si aprirà.' },
+          hint: 'Dopo l’installazione, tocca di nuovo il link ricevuto e la sfida si aprirà.',
+          privacy: 'Privacy', terms: 'Termini' },
     pl: { doc: 'Mind Duel – zaproszenie', title: 'Masz wyzwanie!',
           body: '3 szybkie gry – te same łamigłówki dla was obojga.', open: 'Otwórz w aplikacji',
           ios: 'Pobierz – App Store', android: 'Pobierz – Google Play',
-          hint: 'Po instalacji dotknij ponownie otrzymanego linku, a wyzwanie się otworzy.' },
+          hint: 'Po instalacji dotknij ponownie otrzymanego linku, a wyzwanie się otworzy.',
+          privacy: 'Prywatność', terms: 'Regulamin' },
     ro: { doc: 'Mind Duel – invitație', title: 'Ai primit o provocare!',
           body: '3 jocuri rapide – aceleași puzzle-uri pentru amândoi.', open: 'Deschide în aplicație',
           ios: 'Descarcă – App Store', android: 'Descarcă – Google Play',
-          hint: 'După instalare, atinge din nou linkul primit și provocarea se va deschide.' },
+          hint: 'După instalare, atinge din nou linkul primit și provocarea se va deschide.',
+          privacy: 'Confidențialitate', terms: 'Termeni' },
     cs: { doc: 'Mind Duel – pozvánka', title: 'Máš výzvu!',
           body: '3 rychlé hry – stejné hádanky pro oba.', open: 'Otevřít v aplikaci',
           ios: 'Stáhnout – App Store', android: 'Stáhnout – Google Play',
-          hint: 'Po instalaci znovu klepni na obdržený odkaz a výzva se otevře.' },
+          hint: 'Po instalaci znovu klepni na obdržený odkaz a výzva se otevře.',
+          privacy: 'Soukromí', terms: 'Podmínky' },
     nl: { doc: 'Mind Duel – uitnodiging', title: 'Je bent uitgedaagd!',
           body: '3 snelle spellen – dezelfde puzzels voor jullie allebei.', open: 'Openen in de app',
           ios: 'Downloaden – App Store', android: 'Downloaden – Google Play',
-          hint: 'Tik na het installeren opnieuw op de ontvangen link, dan opent de uitdaging.' },
+          hint: 'Tik na het installeren opnieuw op de ontvangen link, dan opent de uitdaging.',
+          privacy: 'Privacy', terms: 'Voorwaarden' },
     tr: { doc: 'Mind Duel – davet', title: 'Sana meydan okundu!',
           body: '3 hızlı oyun – ikiniz için de aynı bulmacalar.', open: 'Uygulamada aç',
           ios: 'İndir – App Store', android: 'İndir – Google Play',
-          hint: 'Yükledikten sonra aldığın bağlantıya tekrar dokun, meydan okuma açılacak.' },
+          hint: 'Yükledikten sonra aldığın bağlantıya tekrar dokun, meydan okuma açılacak.',
+          privacy: 'Gizlilik', terms: 'Koşullar' },
   };
   // A böngésző nyelvi sorrendjéből az első, amit ismerünk.
   const lang = (navigator.languages || [navigator.language]).map(l => l.slice(0, 2).toLowerCase())
