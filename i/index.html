@@ -21,8 +21,13 @@
   a.btn { display:block; padding:14px; border-radius:999px; text-decoration:none; font-weight:600; margin-top:12px; }
   a.primary { background:var(--accent); color:#fff; }
   a.secondary { border:1.5px solid var(--muted); color:var(--fg); }
-  .soon { display:block; padding:12px 14px; border-radius:16px; margin-top:12px; font-size:14px;
-          border:1.5px dashed var(--muted); color:var(--muted); }
+  /* Még nem elérhető áruház: halvány, nem kattintható gomb, alul ráhelyezett „várhatóan” címkével. */
+  .soon { position:relative; display:block; padding:14px; border-radius:999px; margin:12px 0 24px; font-weight:600;
+          border:1.5px dashed var(--muted); cursor:default; }
+  .soon .label { color:var(--muted); opacity:.7; }
+  .soon .badge { position:absolute; right:18px; bottom:0; transform:translateY(55%) rotate(-2deg);
+                 padding:3px 10px; border-radius:999px; font-size:12px; font-weight:700; white-space:nowrap;
+                 background:#fbbf24; color:#3b2a00; box-shadow:0 2px 6px rgba(0,0,0,.18); }
   .hint { font-size:13px; margin-top:20px; }
   .logo { width:72px; height:72px; border-radius:16px; }
   footer { font-size:12px; margin-top:16px; color:var(--muted); opacity:.7; }
@@ -38,16 +43,20 @@
   <p data-t="body">3 gyors játék, mindkettőtöknek ugyanazok a pályák.</p>
   <div class="code" id="code"></div>
   <a class="btn primary" id="open" data-t="open">Megnyitás az appban</a>
-  <a class="btn secondary" id="ios" hidden data-t="ios">Letöltés – App Store</a>
+  <a class="btn secondary" id="ios" data-t="ios">Letöltés – App Store</a>
   <a class="btn secondary" id="android" hidden data-t="android">Letöltés – Google Play</a>
-  <div class="soon" id="android-soon" hidden data-t="soon">Android: hamarosan – várhatóan 2027 januárjában</div>
+  <div class="soon" id="android-soon" aria-disabled="true">
+    <span class="label" data-t="android">Letöltés – Google Play</span>
+    <span class="badge" data-t="soon">Várhatóan 2027 januárjában</span>
+  </div>
   <p class="hint" data-t="hint">Letöltés után koppints újra a kapott linkre, és a kihívás megnyílik.</p>
 </main>
 <footer>
-  <a href="../privacy/" data-t="privacy">Adatvédelem</a> · <a href="../terms/" data-t="terms">Felhasználási feltételek</a>
+  <a href="../support/" data-t="support">Segítség</a> · <a href="../privacy/" data-t="privacy">Adatvédelem</a> · <a href="../terms/" data-t="terms">Felhasználási feltételek</a>
 </footer>
 <script>
-  // Letöltési linkek: kiadás előtt TestFlight; amíg üres, a gomb rejtve marad.
+  // Letöltési linkek. Az App Store gomb mindig látszik (amíg nincs link, nem kattintható); a Google Play
+  // helyén a „hamarosan” felirat áll, amíg nincs ANDROID_URL.
   const IOS_URL = '';
   const ANDROID_URL = '';
 
@@ -56,69 +65,69 @@
     en: { doc: 'Mind Duel – invite', title: 'You have been challenged!',
           body: '3 quick games – the same puzzles for both of you.', open: 'Open in the app',
           ios: 'Download – App Store', android: 'Download – Google Play',
-          soon: 'Android: coming soon – expected January 2027',
+          soon: 'Expected January 2027',
           hint: 'After installing, tap the link you received again and the challenge opens.',
-          privacy: 'Privacy', terms: 'Terms' },
+          support: 'Support', privacy: 'Privacy', terms: 'Terms' },
     de: { doc: 'Mind Duel – Einladung', title: 'Du wurdest herausgefordert!',
           body: '3 schnelle Spiele – für euch beide dieselben Rätsel.', open: 'In der App öffnen',
           ios: 'Herunterladen – App Store', android: 'Herunterladen – Google Play',
-          soon: 'Android: bald verfügbar – voraussichtlich Januar 2027',
+          soon: 'Voraussichtlich Januar 2027',
           hint: 'Tippe nach der Installation erneut auf den erhaltenen Link, dann öffnet sich die Herausforderung.',
-          privacy: 'Datenschutz', terms: 'Nutzungsbedingungen' },
+          support: 'Hilfe', privacy: 'Datenschutz', terms: 'Nutzungsbedingungen' },
     es: { doc: 'Mind Duel – invitación', title: '¡Te han desafiado!',
           body: '3 juegos rápidos: los mismos retos para los dos.', open: 'Abrir en la app',
           ios: 'Descargar – App Store', android: 'Descargar – Google Play',
-          soon: 'Android: muy pronto – previsto para enero de 2027',
+          soon: 'Previsto: enero de 2027',
           hint: 'Después de instalarla, vuelve a tocar el enlace que recibiste y se abrirá el desafío.',
-          privacy: 'Privacidad', terms: 'Términos' },
+          support: 'Ayuda', privacy: 'Privacidad', terms: 'Términos' },
     fr: { doc: 'Mind Duel – invitation', title: 'Un défi pour toi !',
           body: '3 jeux rapides – les mêmes énigmes pour vous deux.', open: 'Ouvrir dans l’app',
           ios: 'Télécharger – App Store', android: 'Télécharger – Google Play',
-          soon: 'Android : bientôt disponible – prévu en janvier 2027',
+          soon: 'Prévu en janvier 2027',
           hint: 'Après l’installation, touche à nouveau le lien reçu et le défi s’ouvrira.',
-          privacy: 'Confidentialité', terms: 'Conditions' },
+          support: 'Aide', privacy: 'Confidentialité', terms: 'Conditions' },
     pt: { doc: 'Mind Duel – convite', title: 'Um desafio para você!',
           body: '3 jogos rápidos – os mesmos desafios para vocês dois.', open: 'Abrir no app',
           ios: 'Baixar – App Store', android: 'Baixar – Google Play',
-          soon: 'Android: em breve – previsto para janeiro de 2027',
+          soon: 'Previsto: janeiro de 2027',
           hint: 'Depois de instalar, toque de novo no link recebido e o desafio vai abrir.',
-          privacy: 'Privacidade', terms: 'Termos' },
+          support: 'Ajuda', privacy: 'Privacidade', terms: 'Termos' },
     it: { doc: 'Mind Duel – invito', title: 'Hai ricevuto una sfida!',
           body: '3 giochi veloci – gli stessi rompicapi per entrambi.', open: 'Apri nell’app',
           ios: 'Scarica – App Store', android: 'Scarica – Google Play',
-          soon: 'Android: in arrivo – previsto a gennaio 2027',
+          soon: 'Previsto a gennaio 2027',
           hint: 'Dopo l’installazione, tocca di nuovo il link ricevuto e la sfida si aprirà.',
-          privacy: 'Privacy', terms: 'Termini' },
+          support: 'Assistenza', privacy: 'Privacy', terms: 'Termini' },
     pl: { doc: 'Mind Duel – zaproszenie', title: 'Masz wyzwanie!',
           body: '3 szybkie gry – te same łamigłówki dla was obojga.', open: 'Otwórz w aplikacji',
           ios: 'Pobierz – App Store', android: 'Pobierz – Google Play',
-          soon: 'Android: wkrótce – planowo w styczniu 2027',
+          soon: 'Planowo: styczeń 2027',
           hint: 'Po instalacji dotknij ponownie otrzymanego linku, a wyzwanie się otworzy.',
-          privacy: 'Prywatność', terms: 'Regulamin' },
+          support: 'Pomoc', privacy: 'Prywatność', terms: 'Regulamin' },
     ro: { doc: 'Mind Duel – invitație', title: 'Ai primit o provocare!',
           body: '3 jocuri rapide – aceleași puzzle-uri pentru amândoi.', open: 'Deschide în aplicație',
           ios: 'Descarcă – App Store', android: 'Descarcă – Google Play',
-          soon: 'Android: în curând – estimat în ianuarie 2027',
+          soon: 'Estimat: ianuarie 2027',
           hint: 'După instalare, atinge din nou linkul primit și provocarea se va deschide.',
-          privacy: 'Confidențialitate', terms: 'Termeni' },
+          support: 'Ajutor', privacy: 'Confidențialitate', terms: 'Termeni' },
     cs: { doc: 'Mind Duel – pozvánka', title: 'Máš výzvu!',
           body: '3 rychlé hry – stejné hádanky pro oba.', open: 'Otevřít v aplikaci',
           ios: 'Stáhnout – App Store', android: 'Stáhnout – Google Play',
-          soon: 'Android: již brzy – předpoklad leden 2027',
+          soon: 'Předpoklad: leden 2027',
           hint: 'Po instalaci znovu klepni na obdržený odkaz a výzva se otevře.',
-          privacy: 'Soukromí', terms: 'Podmínky' },
+          support: 'Nápověda', privacy: 'Soukromí', terms: 'Podmínky' },
     nl: { doc: 'Mind Duel – uitnodiging', title: 'Je bent uitgedaagd!',
           body: '3 snelle spellen – dezelfde puzzels voor jullie allebei.', open: 'Openen in de app',
           ios: 'Downloaden – App Store', android: 'Downloaden – Google Play',
-          soon: 'Android: binnenkort – verwacht in januari 2027',
+          soon: 'Verwacht in januari 2027',
           hint: 'Tik na het installeren opnieuw op de ontvangen link, dan opent de uitdaging.',
-          privacy: 'Privacy', terms: 'Voorwaarden' },
+          support: 'Hulp', privacy: 'Privacy', terms: 'Voorwaarden' },
     tr: { doc: 'Mind Duel – davet', title: 'Sana meydan okundu!',
           body: '3 hızlı oyun – ikiniz için de aynı bulmacalar.', open: 'Uygulamada aç',
           ios: 'İndir – App Store', android: 'İndir – Google Play',
-          soon: 'Android: yakında – Ocak 2027’de bekleniyor',
+          soon: 'Ocak 2027’de bekleniyor',
           hint: 'Yükledikten sonra aldığın bağlantıya tekrar dokun, meydan okuma açılacak.',
-          privacy: 'Gizlilik', terms: 'Koşullar' },
+          support: 'Destek', privacy: 'Gizlilik', terms: 'Koşullar' },
   };
   // A böngésző nyelvi sorrendjéből az első, amit ismerünk.
   const lang = (navigator.languages || [navigator.language]).map(l => l.slice(0, 2).toLowerCase())
@@ -133,11 +142,11 @@
   const valid = /^[A-Z0-9]{6}$/.test(code);
   document.getElementById('code').textContent = valid ? code : '';
   document.getElementById('open').href = valid ? 'minduel://i?c=' + code : '#';
-  const ua = navigator.userAgent;
-  if (IOS_URL && !/Android/i.test(ua)) { const a = document.getElementById('ios'); a.href = IOS_URL; a.hidden = false; }
-  if (!/iPhone|iPad/i.test(ua)) {
-    if (ANDROID_URL) { const a = document.getElementById('android'); a.href = ANDROID_URL; a.hidden = false; }
-    else document.getElementById('android-soon').hidden = false; // iOS-en előbb jelenik meg
+  // Mindkét áruház látszik, eszköztől függetlenül, hogy egyértelmű legyen, hol érhető el az app.
+  if (IOS_URL) document.getElementById('ios').href = IOS_URL;
+  if (ANDROID_URL) {
+    const a = document.getElementById('android'); a.href = ANDROID_URL; a.hidden = false;
+    document.getElementById('android-soon').hidden = true;
   }
 </script>
 </body>
